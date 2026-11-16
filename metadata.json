@@ -1,0 +1,6 @@
+{
+  "name": "Solidário Tech",
+  "description": "Sistema de Gerenciamento de Doações com tema natalino para ONGs e instituições de caridade.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
