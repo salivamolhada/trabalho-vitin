@@ -1,0 +1,5 @@
+solidario_tech
+*.db
+*.log
+__pycache__
+.venv
