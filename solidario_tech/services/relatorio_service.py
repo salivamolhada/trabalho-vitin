@@ -1,4 +1,4 @@
-"""Serviço de Ciência de Dados e geração de gráficos natalinos (Pandas + Matplotlib + Seaborn)."""
+"""Serviço de Ciência de Dados e geração de gráficos natalinos coloridos (Pandas + Matplotlib + Seaborn)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,9 @@ from matplotlib.figure import Figure
 from database.connection import DatabaseConnection
 from models.doacao import CATEGORIAS_VALIDAS
 
-PALETA_NATAL = ["#0B3D2E", "#C1272D", "#D4AF37", "#1F6E56", "#8E1B20"]
+PALETA_3D_NATAL = ["#34D399", "#FB7185", "#60A5FA", "#FBBF24", "#C084FC"]
+COR_FUNDO_FIGURA = "#560B10"
+COR_FUNDO_EIXO = "#3E060A"
 
 
 class RelatorioService:
@@ -21,7 +23,7 @@ class RelatorioService:
 
     def __init__(self, db: DatabaseConnection) -> None:
         self.db = db
-        sns.set_theme(style="whitegrid")
+        sns.set_theme(style="darkgrid")
 
     def obter_dataframe_doacoes(self) -> pd.DataFrame:
         """Carrega todas as doações em um DataFrame Pandas tipado."""
@@ -80,13 +82,13 @@ class RelatorioService:
         }
 
     def gerar_grafico_barras(self, fig: Figure) -> None:
-        """Desenha gráfico de barras com total de doações recebidas por categoria."""
+        """Desenha gráfico de barras colorido com total de doações recebidas por categoria."""
         fig.clear()
         ax = fig.add_subplot(111)
         df = self.obter_dataframe_doacoes()
 
         if df.empty:
-            self._desenhar_estado_vazio(ax, "Sem doações registradas para exibir barras.")
+            self._desenhar_estado_vazio(ax, fig, "Sem doações registradas para exibir barras.")
             fig.tight_layout()
             return
 
@@ -96,7 +98,7 @@ class RelatorioService:
             .sort_values("quantidade", ascending=False)
         )
 
-        cores = PALETA_NATAL[: len(agrupado)]
+        cores = PALETA_3D_NATAL[: len(agrupado)]
         sns.barplot(
             data=agrupado,
             x="rotulo",
@@ -115,54 +117,58 @@ class RelatorioService:
                 va="bottom",
                 fontsize=9,
                 fontweight="bold",
-                color="#0B3D2E",
+                color="#FDE047",
                 xytext=(0, 3),
                 textcoords="offset points",
             )
 
-        ax.set_title("Doações Recebidas por Tipo de Item", fontsize=11, fontweight="bold", color="#0B3D2E", pad=12)
+        ax.set_title("Doações Recebidas por Tipo de Item", fontsize=11, fontweight="bold", color="#FDE047", pad=12)
         ax.set_xlabel("")
-        ax.set_ylabel("Quantidade", fontsize=9, color="#334155")
-        ax.tick_params(axis="x", labelsize=9)
+        ax.set_ylabel("Quantidade", fontsize=9, color="#FFE9B3")
+        ax.tick_params(axis="x", labelsize=9, colors="#FFF9F0")
+        ax.tick_params(axis="y", labelsize=9, colors="#FFE9B3")
+        ax.grid(color="#FFFFFF", alpha=0.14)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-        fig.patch.set_facecolor("#FFFFFF")
-        ax.set_facecolor("#FAFAFA")
+        ax.spines["left"].set_color("#F5C451")
+        ax.spines["bottom"].set_color("#F5C451")
+        fig.patch.set_facecolor(COR_FUNDO_FIGURA)
+        ax.set_facecolor(COR_FUNDO_EIXO)
         fig.tight_layout()
 
     def gerar_grafico_pizza(self, fig: Figure) -> None:
-        """Desenha gráfico de pizza com participação percentual de cada categoria."""
+        """Desenha gráfico de pizza colorido com participação percentual de cada categoria."""
         fig.clear()
         ax = fig.add_subplot(111)
         df = self.obter_dataframe_doacoes()
 
         if df.empty:
-            self._desenhar_estado_vazio(ax, "Sem dados para distribuição percentual.")
+            self._desenhar_estado_vazio(ax, fig, "Sem dados para distribuição percentual.")
             fig.tight_layout()
             return
 
         agrupado = df.groupby("rotulo")["quantidade"].sum()
-        cores = PALETA_NATAL[: len(agrupado)]
+        cores = PALETA_3D_NATAL[: len(agrupado)]
 
-        wedges, texts, autotexts = ax.pie(
+        _wedges, texts, autotexts = ax.pie(
             agrupado.values,
             labels=agrupado.index,
             autopct="%1.1f%%",
             startangle=120,
             colors=cores,
             pctdistance=0.75,
-            wedgeprops={"edgecolor": "#FFFFFF", "linewidth": 2},
+            wedgeprops={"edgecolor": COR_FUNDO_FIGURA, "linewidth": 2},
         )
         for text in texts:
             text.set_fontsize(9)
-            text.set_color("#1E293B")
+            text.set_color("#FFF9F0")
         for autotext in autotexts:
             autotext.set_fontsize(8)
             autotext.set_fontweight("bold")
-            autotext.set_color("#FFFFFF")
+            autotext.set_color("#1B0507")
 
-        ax.set_title("Distribuição Percentual por Categoria", fontsize=11, fontweight="bold", color="#0B3D2E", pad=10)
-        fig.patch.set_facecolor("#FFFFFF")
+        ax.set_title("Distribuição Percentual por Categoria", fontsize=11, fontweight="bold", color="#FDE047", pad=10)
+        fig.patch.set_facecolor(COR_FUNDO_FIGURA)
         fig.tight_layout()
 
     def gerar_grafico_linha_30_dias(self, fig: Figure) -> None:
@@ -172,7 +178,7 @@ class RelatorioService:
         df = self.obter_dataframe_doacoes()
 
         if df.empty or df["data_dt"].dropna().empty:
-            self._desenhar_estado_vazio(ax, "Sem histórico temporal nos últimos 30 dias.")
+            self._desenhar_estado_vazio(ax, fig, "Sem histórico temporal nos últimos 30 dias.")
             fig.tight_layout()
             return
 
@@ -190,24 +196,28 @@ class RelatorioService:
         ax.plot(
             diario.index,
             diario.values,
-            color="#C1272D",
-            linewidth=2.2,
+            color="#FDE047",
+            linewidth=2.4,
             marker="o",
-            markersize=4,
-            markerfacecolor="#D4AF37",
-            markeredgecolor="#0B3D2E",
+            markersize=4.5,
+            markerfacecolor="#34D399",
+            markeredgecolor="#FFF9F0",
         )
-        ax.fill_between(diario.index, diario.values, color="#0B3D2E", alpha=0.12)
+        ax.fill_between(diario.index, diario.values, color="#34D399", alpha=0.18)
 
-        ax.set_title("Evolução das Doações (Últimos 30 Dias)", fontsize=11, fontweight="bold", color="#0B3D2E", pad=12)
-        ax.set_ylabel("Itens / Dia", fontsize=9, color="#334155")
+        ax.set_title("Evolução das Doações (Últimos 30 Dias)", fontsize=11, fontweight="bold", color="#FDE047", pad=12)
+        ax.set_ylabel("Itens / Dia", fontsize=9, color="#FFE9B3")
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m"))
         ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
-        ax.tick_params(axis="x", labelsize=8)
+        ax.tick_params(axis="x", labelsize=8, colors="#FFF9F0")
+        ax.tick_params(axis="y", labelsize=8, colors="#FFE9B3")
+        ax.grid(color="#FFFFFF", alpha=0.14)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-        fig.patch.set_facecolor("#FFFFFF")
-        ax.set_facecolor("#FAFAFA")
+        ax.spines["left"].set_color("#F5C451")
+        ax.spines["bottom"].set_color("#F5C451")
+        fig.patch.set_facecolor(COR_FUNDO_FIGURA)
+        ax.set_facecolor(COR_FUNDO_EIXO)
         fig.tight_layout()
 
     def gerar_grafico_comparativo_kpi(self, fig: Figure) -> None:
@@ -222,7 +232,7 @@ class RelatorioService:
             kpis["total_distribuido"],
             kpis["total_estoque"],
         ]
-        cores = ["#0B3D2E", "#C1272D", "#D4AF37"]
+        cores = ["#34D399", "#FB7185", "#FBBF24"]
 
         bars = ax.barh(categorias, valores, color=cores, height=0.52)
         for bar in bars:
@@ -236,24 +246,31 @@ class RelatorioService:
                 textcoords="offset points",
                 fontsize=9,
                 fontweight="bold",
-                color="#1E293B",
+                color="#FFF9F0",
             )
 
         ax.set_title(
             f"Balanço Geral (Taxa de Entrega: {kpis['taxa_distribuicao']}%)",
             fontsize=11,
             fontweight="bold",
-            color="#0B3D2E",
+            color="#FDE047",
             pad=12,
         )
         ax.set_xlim(0, max(valores + [10]) * 1.18)
+        ax.tick_params(axis="x", labelsize=9, colors="#FFE9B3")
+        ax.tick_params(axis="y", labelsize=9, colors="#FFF9F0")
+        ax.grid(color="#FFFFFF", alpha=0.14)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-        fig.patch.set_facecolor("#FFFFFF")
-        ax.set_facecolor("#FAFAFA")
+        ax.spines["left"].set_color("#F5C451")
+        ax.spines["bottom"].set_color("#F5C451")
+        fig.patch.set_facecolor(COR_FUNDO_FIGURA)
+        ax.set_facecolor(COR_FUNDO_EIXO)
         fig.tight_layout()
 
     @staticmethod
-    def _desenhar_estado_vazio(ax: Any, mensagem: str) -> None:
-        ax.text(0.5, 0.5, mensagem, ha="center", va="center", fontsize=10, color="#64748B")
+    def _desenhar_estado_vazio(ax: Any, fig: Figure, mensagem: str) -> None:
+        fig.patch.set_facecolor(COR_FUNDO_FIGURA)
+        ax.set_facecolor(COR_FUNDO_EIXO)
+        ax.text(0.5, 0.5, mensagem, ha="center", va="center", fontsize=10, color="#FFE9B3")
         ax.set_axis_off()

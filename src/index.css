@@ -6,17 +6,19 @@
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --color-pine: #0B3D2E;
-  --color-crimson: #C1272D;
-  --color-gold: #D4AF37;
-  --color-snow: #F8FAFC;
-  --color-frost: #E2E8F0;
+  --color-crimson: #B91C1C;
+  --color-gold: #F5C451;
 }
 
 @layer base {
   body {
     font-family: var(--font-sans);
-    background: linear-gradient(180deg, #FFFFFF 0%, #F4F7FA 55%, #EEF4F8 100%);
-    color: #122620;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(251, 191, 36, 0.16) 0%, transparent 42%),
+      radial-gradient(circle at 82% 20%, rgba(16, 185, 129, 0.14) 0%, transparent 38%),
+      radial-gradient(circle at 50% 85%, rgba(244, 63, 94, 0.22) 0%, transparent 50%),
+      linear-gradient(160deg, #52090E 0%, #8C141D 48%, #47070C 100%);
+    color: #FFF9F0;
     min-height: 100vh;
   }
 
@@ -30,9 +32,40 @@
   }
 }
 
-/* Snow-soft elevation shadow for White Christmas */
-.shadow-snow {
-  box-shadow: 0 10px 30px -10px rgba(15, 55, 45, 0.08), 0 2px 10px -2px rgba(148, 163, 184, 0.16);
+/* Superficies 3D coloridas e táteis */
+.card-3d {
+  box-shadow:
+    0 14px 28px -10px rgba(20, 2, 4, 0.65),
+    0 6px 0 0 rgba(36, 4, 7, 0.72),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.26);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-3d-hover:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 20px 34px -10px rgba(15, 2, 3, 0.75),
+    0 8px 0 0 rgba(36, 4, 7, 0.75),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.34);
+}
+
+.btn-3d {
+  box-shadow:
+    0 4px 0 0 rgba(0, 0, 0, 0.38),
+    0 8px 16px -6px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.32);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 150ms ease;
+}
+
+.btn-3d:hover {
+  filter: brightness(1.07);
+}
+
+.btn-3d:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Page fade-in */
@@ -51,42 +84,43 @@
   animation: pageFadeIn 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Pisca-pisca natalino (compositor-friendly opacity & drop-shadow glow) */
-@keyframes twinkleBulb {
+/* Pisca-pisca 3D colorido com brilho intenso */
+@keyframes twinkleBulb3D {
   0%, 100% {
-    opacity: 0.32;
+    opacity: 0.45;
     transform: scale(0.92);
     filter: brightness(0.85);
   }
   50% {
     opacity: 1;
-    transform: scale(1.12);
-    filter: brightness(1.35) drop-shadow(0 0 6px currentColor);
+    transform: scale(1.18);
+    filter: brightness(1.4) drop-shadow(0 0 10px currentColor);
   }
 }
 
-.pisca-bulb {
-  animation: twinkleBulb var(--twinkle-duration, 1.5s) ease-in-out infinite;
+.pisca-bulb-3d {
+  animation: twinkleBulb3D var(--twinkle-duration, 1.35s) ease-in-out infinite;
   animation-delay: var(--twinkle-delay, 0s);
   will-change: opacity, transform, filter;
 }
 
-.pisca-paused .pisca-bulb {
+.pisca-paused .pisca-bulb-3d {
   animation: none;
   opacity: 0.9;
+  filter: none;
 }
 
-/* Pure CSS Falling Snowflakes for White Christmas */
+/* Flocos de neve dourados e prateados */
 @keyframes snowfall {
   0% {
     transform: translate3d(0, -8vh, 0) rotate(0deg);
     opacity: 0;
   }
   15% {
-    opacity: var(--flake-opacity, 0.55);
+    opacity: var(--flake-opacity, 0.65);
   }
   85% {
-    opacity: var(--flake-opacity, 0.55);
+    opacity: var(--flake-opacity, 0.65);
   }
   100% {
     transform: translate3d(var(--flake-drift, 28px), 106vh, 0) rotate(180deg);
@@ -100,16 +134,90 @@
   pointer-events: none;
   user-select: none;
   z-index: 1;
-  color: #CBD5E1;
+  color: #FFE9B3;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.45);
   will-change: transform, opacity;
   animation: snowfall var(--flake-duration, 16s) linear infinite;
   animation-delay: var(--flake-delay, 0s);
 }
 
+/* Renas e Papai Noel voando de treno no fundo da pagina */
+@keyframes santaFlight {
+  0% {
+    transform: translate3d(-420px, 34px, 0) rotate(-3deg);
+    opacity: 0;
+  }
+  7% {
+    opacity: 0.85;
+  }
+  30% {
+    transform: translate3d(26vw, -16px, 0) rotate(2deg);
+    opacity: 0.92;
+  }
+  55% {
+    transform: translate3d(56vw, 22px, 0) rotate(-2deg);
+    opacity: 0.9;
+  }
+  82% {
+    transform: translate3d(86vw, -18px, 0) rotate(2deg);
+    opacity: 0.82;
+  }
+  96% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate3d(calc(100vw + 140px), -38px, 0) rotate(-1deg);
+    opacity: 0;
+  }
+}
+
+@keyframes rudolphNose {
+  0%, 100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 4px #FF2E4D);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px #FF2E4D);
+  }
+}
+
+.santa-sleigh-fly {
+  position: fixed;
+  top: 11vh;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  filter: drop-shadow(0 12px 16px rgba(20, 2, 4, 0.5));
+  will-change: transform, opacity;
+  animation: santaFlight 24s linear infinite;
+}
+
+.santa-sleigh-fly-secondary {
+  position: fixed;
+  top: 66vh;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  filter: drop-shadow(0 10px 14px rgba(20, 2, 4, 0.45));
+  will-change: transform, opacity;
+  animation: santaFlight 33s linear infinite;
+  animation-delay: -13s;
+}
+
+.rudolph-glow {
+  animation: rudolphNose 0.95s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .snowflake-particle,
   .animate-fade-in,
-  .pisca-bulb {
+  .pisca-bulb-3d,
+  .santa-sleigh-fly,
+  .santa-sleigh-fly-secondary,
+  .rudolph-glow {
     animation: none !important;
   }
 }

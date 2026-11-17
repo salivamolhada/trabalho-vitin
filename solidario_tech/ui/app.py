@@ -1,4 +1,4 @@
-"""Janela principal e navegação lateral (sidebar) Natal Branco do Solidário Tech."""
+"""Janela principal e navegação lateral (sidebar) Vermelho Natalino & 3D do Solidário Tech."""
 
 from __future__ import annotations
 
@@ -19,8 +19,8 @@ from ui.screens.sobre import SobreScreen
 from ui.theme import (
     COR_BRANCO_NEVE,
     COR_CARD_BRANCO,
-    COR_CINZA_CLARO,
     COR_DOURADO,
+    COR_OURO_CLARO,
     COR_SIDEBAR_BRANCO,
     COR_SIDEBAR_HOVER,
     COR_TEXTO_ESCURO,
@@ -32,11 +32,11 @@ from ui.theme import (
 
 
 class SolidarioTechApp(ctk.CTk):
-    """Aplicação principal CustomTkinter com tema Natal Branco e pisca-pisca."""
+    """Aplicação principal CustomTkinter com tema Vermelho Natalino 3D e pisca-pisca."""
 
     def __init__(self, db: DatabaseConnection) -> None:
         super().__init__()
-        ctk.set_appearance_mode("light")
+        ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("green")
 
         self.db = db
@@ -44,7 +44,7 @@ class SolidarioTechApp(ctk.CTk):
         self.distribuicao_service = DistribuicaoService(db)
         self.relatorio_service = RelatorioService(db)
 
-        self.title("Solidário Tech — Natal Branco · Sistema de Doações")
+        self.title("Solidário Tech — Natal Solidário 3D · Sistema de Doações")
         self.geometry("1220x760")
         self.minsize(1100, 700)
         self.configure(fg_color=COR_BRANCO_NEVE)
@@ -62,7 +62,7 @@ class SolidarioTechApp(ctk.CTk):
         self.botoes_nav: dict[str, ctk.CTkButton] = {}
         self.telas: dict[str, ctk.CTkFrame] = {}
         self.titulos_telas: dict[str, str] = {
-            "dashboard": "🎄 Painel Inicial — Natal Branco",
+            "dashboard": "🎄 Painel Inicial — Natal Solidário",
             "doacoes": "🎁 Cadastro e Gestão de Doações",
             "estoque": "🧺 Controle de Itens Disponíveis",
             "distribuicoes": "⭐ Registro de Distribuição Solidária",
@@ -81,7 +81,7 @@ class SolidarioTechApp(ctk.CTk):
             fg_color=COR_SIDEBAR_BRANCO,
             corner_radius=0,
             border_width=1,
-            border_color=COR_CINZA_CLARO,
+            border_color=COR_DOURADO,
         )
         sidebar.grid(row=0, column=0, sticky="nsew")
         sidebar.grid_propagate(False)
@@ -100,14 +100,14 @@ class SolidarioTechApp(ctk.CTk):
             titulo_box,
             text="Solidário Tech",
             font=ctk.CTkFont(size=18, weight="bold"),
-            text_color=COR_VERDE_PINHEIRO,
+            text_color=COR_TEXTO_ESCURO,
             anchor="w",
         ).pack(anchor="w")
         ctk.CTkLabel(
             titulo_box,
-            text="Natal Branco 2026",
+            text="Campanha de Natal 2026",
             font=ctk.CTkFont(size=11, weight="bold"),
-            text_color="#9A7B16",
+            text_color=COR_OURO_CLARO,
             anchor="w",
         ).pack(anchor="w")
 
@@ -142,8 +142,8 @@ class SolidarioTechApp(ctk.CTk):
 
         rodape = ctk.CTkFrame(
             sidebar,
-            fg_color=COR_BRANCO_NEVE,
-            corner_radius=10,
+            fg_color=COR_VERDE_PINHEIRO,
+            corner_radius=12,
             border_width=1,
             border_color=COR_DOURADO,
         )
@@ -151,8 +151,8 @@ class SolidarioTechApp(ctk.CTk):
         ctk.CTkLabel(
             rodape,
             text="Desafio Tech Solutions 2026\n3º A • Desenv. de Sistemas",
-            font=ctk.CTkFont(size=11),
-            text_color=COR_TEXTO_SUAVE,
+            font=ctk.CTkFont(size=11, weight="bold"),
+            text_color="#FFF9F0",
             justify="center",
         ).pack(padx=10, pady=10)
 
@@ -164,15 +164,15 @@ class SolidarioTechApp(ctk.CTk):
 
         topbar = ctk.CTkFrame(
             main_area,
-            fg_color=COR_CARD_BRANCO,
+            fg_color=COR_SIDEBAR_BRANCO,
             corner_radius=0,
             border_width=1,
-            border_color=COR_CINZA_CLARO,
+            border_color=COR_DOURADO,
         )
         topbar.grid(row=0, column=0, sticky="ew")
         topbar.grid_columnconfigure(0, weight=1)
 
-        PiscaPiscaStrip(topbar, qtd_lampadas=18, bg_color=COR_CARD_BRANCO).grid(
+        PiscaPiscaStrip(topbar, qtd_lampadas=18, bg_color=COR_SIDEBAR_BRANCO).grid(
             row=0, column=0, columnspan=2, padx=10, pady=(4, 0), sticky="ew"
         )
 
@@ -180,7 +180,7 @@ class SolidarioTechApp(ctk.CTk):
             topbar,
             text="Dashboard",
             font=ctk.CTkFont(size=19, weight="bold"),
-            text_color=COR_VERDE_PINHEIRO,
+            text_color=COR_TEXTO_ESCURO,
             anchor="w",
         )
         self.lbl_titulo_tela.grid(row=1, column=0, padx=22, pady=(6, 12), sticky="w")
@@ -223,8 +223,8 @@ class SolidarioTechApp(ctk.CTk):
         for chave, botao in self.botoes_nav.items():
             ativo = chave == nome_tela
             botao.configure(
-                fg_color=COR_VERDE_PINHEIRO if ativo else "transparent",
-                text_color="#FFFFFF" if ativo else COR_TEXTO_ESCURO,
+                fg_color=COR_DOURADO if ativo else "transparent",
+                text_color="#3B0609" if ativo else COR_TEXTO_ESCURO,
             )
 
         self.lbl_titulo_tela.configure(text=self.titulos_telas.get(nome_tela, "Solidário Tech"))

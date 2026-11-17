@@ -1,4 +1,4 @@
-"""Componente de tabela estilizada usando ttk.Treeview dentro do CustomTkinter."""
+"""Componente de tabela estilizada sobre tema rubi 3D usando ttk.Treeview."""
 
 from __future__ import annotations
 
@@ -7,11 +7,11 @@ from typing import Any, Callable, Sequence
 
 import customtkinter as ctk
 
-from ui.theme import COR_CARD_BRANCO, COR_CINZA_CLARO, COR_TEXTO_ESCURO, COR_VERDE_PINHEIRO
+from ui.theme import COR_CARD_BRANCO, COR_DOURADO, COR_OURO_CLARO, COR_TEXTO_ESCURO
 
 
 class StyledTreeviewTable(ctk.CTkFrame):
-    """Tabela responsiva com rolagem vertical e callback de seleção de linha."""
+    """Tabela responsiva rubi/dourado com rolagem vertical e callback de seleção de linha."""
 
     def __init__(
         self,
@@ -23,9 +23,9 @@ class StyledTreeviewTable(ctk.CTkFrame):
         super().__init__(
             master,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=12,
-            border_width=1,
-            border_color=COR_CINZA_CLARO,
+            corner_radius=14,
+            border_width=2,
+            border_color=COR_DOURADO,
         )
         self.on_select = on_select
         self.grid_rowconfigure(0, weight=1)
@@ -39,25 +39,25 @@ class StyledTreeviewTable(ctk.CTkFrame):
 
         style.configure(
             "Natal.Treeview",
-            background="#FFFFFF",
+            background=COR_CARD_BRANCO,
             foreground=COR_TEXTO_ESCURO,
-            fieldbackground="#FFFFFF",
+            fieldbackground=COR_CARD_BRANCO,
             rowheight=32,
             font=("Segoe UI", 10),
             borderwidth=0,
         )
         style.configure(
             "Natal.Treeview.Heading",
-            background=COR_VERDE_PINHEIRO,
-            foreground="#FFFFFF",
+            background="#3E060A",
+            foreground=COR_OURO_CLARO,
             font=("Segoe UI", 10, "bold"),
             relief="flat",
             padding=(8, 6),
         )
         style.map(
             "Natal.Treeview",
-            background=[("selected", "#D4AF37")],
-            foreground=[("selected", "#0B3D2E")],
+            background=[("selected", COR_DOURADO)],
+            foreground=[("selected", "#3B0609")],
         )
 
         ids_colunas = [c[0] for c in colunas]
@@ -75,9 +75,9 @@ class StyledTreeviewTable(ctk.CTkFrame):
             anchor = "center" if col_id in ("id", "quantidade", "data", "disponivel") else "w"
             self.tree.column(col_id, width=largura, minwidth=60, anchor=anchor)
 
-        self.tree.tag_configure("par", background="#FFFFFF")
-        self.tree.tag_configure("impar", background="#F4F7F5")
-        self.tree.tag_configure("alerta", background="#FDECEC", foreground="#9E1F24")
+        self.tree.tag_configure("par", background="#560B10", foreground="#FFF9F0")
+        self.tree.tag_configure("impar", background="#680E14", foreground="#FFF9F0")
+        self.tree.tag_configure("alerta", background="#991B1B", foreground="#FFE4E6")
 
         scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scrollbar.set)

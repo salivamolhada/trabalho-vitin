@@ -1,4 +1,4 @@
-"""Pop-ups natalinos personalizados com CTkToplevel."""
+"""Pop-ups natalinos 3D personalizados em vermelho e dourado com CTkToplevel."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from ui.theme import (
     COR_BRANCO_NEVE,
     COR_CARD_BRANCO,
     COR_DOURADO,
+    COR_OURO_CLARO,
     COR_TEXTO_ESCURO,
     COR_VERDE_ESCURO_HOVER,
     COR_VERDE_PINHEIRO,
@@ -23,9 +24,9 @@ def show_christmas_dialog(
     icone: str = "🎁",
     tipo: str = "sucesso",
 ) -> None:
-    """Exibe um pop-up estilizado (CTkToplevel) com tema natalino e foco modal."""
-    cor_borda = COR_VERMELHO_NATAL if tipo == "erro" else COR_DOURADO
-    cor_cabecalho = COR_VERMELHO_NATAL if tipo == "erro" else COR_VERDE_PINHEIRO
+    """Exibe um pop-up estilizado (CTkToplevel) com tema natalino vermelho e foco modal."""
+    cor_borda = "#FF6B81" if tipo == "erro" else COR_DOURADO
+    cor_cabecalho = "#FDA4AF" if tipo == "erro" else COR_OURO_CLARO
 
     dialog = ctk.CTkToplevel(master)
     dialog.title(titulo)
@@ -66,8 +67,9 @@ def show_christmas_dialog(
         width=130,
         height=36,
         corner_radius=8,
-        fg_color=cor_cabecalho,
+        fg_color=COR_VERMELHO_NATAL if tipo == "erro" else COR_VERDE_PINHEIRO,
         hover_color=COR_VERMELHO_HOVER if tipo == "erro" else COR_VERDE_ESCURO_HOVER,
+        text_color="#FFFFFF",
         font=ctk.CTkFont(size=13, weight="bold"),
         command=dialog.destroy,
     ).pack(pady=(0, 16))
@@ -105,7 +107,7 @@ def ask_christmas_confirm(
         container,
         text=f"{icone}  {titulo}",
         font=ctk.CTkFont(size=17, weight="bold"),
-        text_color=COR_VERDE_PINHEIRO,
+        text_color=COR_OURO_CLARO,
     ).pack(pady=(18, 8), padx=16)
 
     ctk.CTkLabel(
@@ -130,9 +132,9 @@ def ask_christmas_confirm(
         width=120,
         height=36,
         corner_radius=8,
-        fg_color="#CBD5E1",
-        hover_color="#94A3B8",
-        text_color=COR_TEXTO_ESCURO,
+        fg_color="#3E060A",
+        hover_color="#5A0B10",
+        text_color="#FFF9F0",
         command=dialog.destroy,
     ).pack(side="left", padx=8)
 
@@ -144,6 +146,7 @@ def ask_christmas_confirm(
         corner_radius=8,
         fg_color=COR_VERMELHO_NATAL,
         hover_color=COR_VERMELHO_HOVER,
+        text_color="#FFFFFF",
         font=ctk.CTkFont(size=13, weight="bold"),
         command=confirmar,
     ).pack(side="left", padx=8)

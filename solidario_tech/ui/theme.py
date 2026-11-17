@@ -1,4 +1,4 @@
-"""Identidade visual Natal Branco, paleta de cores, pisca-pisca, ícones Pillow e utilitários."""
+"""Identidade visual Natal Vermelho Vibrante & 3D Colorido, pisca-pisca, ícones Pillow e utilitários."""
 
 from __future__ import annotations
 
@@ -7,38 +7,52 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-# Paleta Natal Branco (White Christmas) do Solidário Tech
-COR_VERDE_PINHEIRO = "#0B3D2E"
-COR_VERDE_ESCURO_HOVER = "#082C21"
-COR_VERDE_CLARO_CARD = "#F1F5F9"
-COR_VERMELHO_NATAL = "#C1272D"
-COR_VERMELHO_HOVER = "#9E1F24"
-COR_DOURADO = "#D4AF37"
-COR_BRANCO_NEVE = "#F8FAFC"
-COR_SIDEBAR_BRANCO = "#FFFFFF"
-COR_SIDEBAR_HOVER = "#F1F5F9"
-COR_CINZA_CLARO = "#E2E8F0"
-COR_CARD_BRANCO = "#FFFFFF"
-COR_TEXTO_ESCURO = "#122620"
-COR_TEXTO_SUAVE = "#4B635B"
-COR_ALERTA_FUNDO = "#FFF5F5"
+# Paleta Vermelho Natalino & 3D Colorido do Solidário Tech
+COR_VERDE_PINHEIRO = "#127053"
+COR_VERDE_ESCURO_HOVER = "#0B4F3A"
+COR_VERDE_CLARO_CARD = "#0F513B"
+COR_VERMELHO_NATAL = "#D93843"
+COR_VERMELHO_HOVER = "#9E141D"
+COR_DOURADO = "#F5C451"
+COR_OURO_CLARO = "#FDE047"
 
-# Cores do pisca-pisca natalino (aceso vs. apagado suave)
+# Fundos em vermelho natalino profundo e superfícies rubi
+COR_BRANCO_NEVE = "#6E0E15"      # Fundo principal vermelho natalino rico
+COR_SIDEBAR_BRANCO = "#4B080D"   # Sidebar veludo vermelho escuro
+COR_SIDEBAR_HOVER = "#8C1620"
+COR_CINZA_CLARO = "#A3222C"
+COR_CARD_BRANCO = "#560B10"      # Superfície rubi para painéis e tabelas
+COR_INPUT_FUNDO = "#360508"
+
+COR_TEXTO_ESCURO = "#FFF9F0"     # Texto principal creme-neve (alto contraste sobre rubi)
+COR_TEXTO_SUAVE = "#FFE9B3"      # Texto secundário dourado suave
+COR_ALERTA_FUNDO = "#991B1B"
+
+# Paleta 3D colorida por categoria de item
+CORES_CATEGORIA_3D: dict[str, tuple[str, str]] = {
+    "brinquedo": ("#127053", "#34D399"),
+    "alimento": ("#C82333", "#FDA4AF"),
+    "roupa": ("#1D4ED8", "#93C5FD"),
+    "dinheiro": ("#B45309", "#FCD34D"),
+    "cesta": ("#7E22CE", "#D8B4FE"),
+}
+
+# Cores do pisca-pisca 3D colorido (aceso brilhante vs. brilho suave)
 CORES_PISCA_ACESO: list[str] = [
-    "#F59E0B",
-    "#E11D48",
-    "#10B981",
-    "#FBBF24",
+    "#FF3B5C",
+    "#FFD43B",
+    "#22E58A",
     "#38BDF8",
-    "#D4AF37",
+    "#C084FC",
+    "#FB923C",
 ]
 CORES_PISCA_APAGADO: list[str] = [
-    "#FDE68A",
-    "#FECDD3",
-    "#A7F3D0",
-    "#FEF3C7",
-    "#BAE6FD",
-    "#F3E8B8",
+    "#881337",
+    "#854D0E",
+    "#065F46",
+    "#075985",
+    "#581C87",
+    "#9A3412",
 ]
 
 FRASES_SOLIDARIEDADE: list[str] = [
@@ -50,16 +64,7 @@ FRASES_SOLIDARIEDADE: list[str] = [
 ]
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
-LOGO_PATH = ASSETS_DIR / "pine_logo.png"
-
-
-def calcular_dias_para_natal(hoje: date | None = None) -> int:
-    """Calcula quantos dias faltam para o dia 25 de dezembro."""
-    ref = hoje or date.today()
-    natal = date(ref.year, 12, 25)
-    if ref > natal:
-        natal = date(ref.year + 1, 12, 25)
-    return (natal - ref).days
+LOGO_PATH = ASSETS_DIR / "pine_logo_red3d.png"
 
 
 def formatar_data_atual_pt() -> str:
@@ -73,7 +78,7 @@ def formatar_data_atual_pt() -> str:
 
 
 def garantir_logo_pinheiro() -> Path:
-    """Gera o ícone de pinheiro estilizado com presente embaixo via Pillow, se ausente."""
+    """Gera o ícone de pinheiro 3D com presente embaixo via Pillow sobre fundo rubi."""
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     if LOGO_PATH.exists():
         return LOGO_PATH
@@ -82,26 +87,26 @@ def garantir_logo_pinheiro() -> Path:
     img = Image.new("RGBA", (tamanho, tamanho), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    # Círculo branco neve com borda dourada
-    draw.ellipse((4, 4, 124, 124), fill=(248, 250, 252, 255), outline=(212, 175, 55, 255), width=4)
+    # Círculo vermelho rubi com borda dourada brilhante
+    draw.ellipse((4, 4, 124, 124), fill=(158, 20, 29, 255), outline=(245, 196, 81, 255), width=4)
 
     # Estrela dourada no topo
     draw.polygon(
         [(64, 14), (68, 23), (78, 23), (70, 29), (73, 38), (64, 32), (55, 38), (58, 29), (50, 23), (60, 23)],
-        fill=(212, 175, 55, 255),
+        fill=(253, 224, 71, 255),
     )
 
-    # Camadas do pinheiro
-    draw.polygon([(64, 30), (38, 60), (90, 60)], fill=(23, 117, 87, 255))
-    draw.polygon([(64, 46), (30, 82), (98, 82)], fill=(11, 61, 46, 255))
+    # Camadas do pinheiro esmeralda
+    draw.polygon([(64, 30), (38, 60), (90, 60)], fill=(52, 211, 153, 255))
+    draw.polygon([(64, 46), (30, 82), (98, 82)], fill=(18, 112, 83, 255))
 
     # Tronco
-    draw.rectangle((58, 82, 70, 94), fill=(112, 68, 36, 255))
+    draw.rectangle((58, 82, 70, 94), fill=(120, 53, 15, 255))
 
-    # Presente vermelho com laço dourado embaixo da árvore
-    draw.rounded_rectangle((46, 88, 82, 112), radius=4, fill=(193, 39, 45, 255), outline=(255, 255, 255, 220), width=2)
-    draw.rectangle((61, 88, 67, 112), fill=(212, 175, 55, 255))
-    draw.rectangle((46, 97, 82, 103), fill=(212, 175, 55, 255))
+    # Presente vermelho vivo com laço dourado
+    draw.rounded_rectangle((46, 88, 82, 112), radius=4, fill=(239, 68, 68, 255), outline=(253, 224, 71, 255), width=2)
+    draw.rectangle((61, 88, 67, 112), fill=(253, 224, 71, 255))
+    draw.rectangle((46, 97, 82, 103), fill=(253, 224, 71, 255))
 
     img.save(LOGO_PATH, format="PNG")
     return LOGO_PATH

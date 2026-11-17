@@ -1,4 +1,4 @@
-"""Tela de Controle de Estoque com cards natalinos, alerta < 5 unidades e ajuste manual."""
+"""Tela de Controle de Estoque com cards 3D coloridos, alerta < 5 unidades e ajuste manual."""
 
 from __future__ import annotations
 
@@ -14,9 +14,9 @@ from ui.components.table import StyledTreeviewTable
 from ui.theme import (
     COR_BRANCO_NEVE,
     COR_CARD_BRANCO,
-    COR_CINZA_CLARO,
     COR_DOURADO,
-    COR_TEXTO_ESCURO,
+    COR_INPUT_FUNDO,
+    COR_OURO_CLARO,
     COR_VERDE_ESCURO_HOVER,
     COR_VERDE_PINHEIRO,
     COR_VERMELHO_HOVER,
@@ -25,7 +25,7 @@ from ui.theme import (
 
 
 class EstoqueScreen(ctk.CTkFrame):
-    """Exibe os 5 cards de categoria, alerta de estoque baixo e ajuste manual."""
+    """Exibe os 5 cards 3D coloridos de categoria, alerta de estoque baixo e ajuste manual."""
 
     def __init__(
         self,
@@ -44,7 +44,7 @@ class EstoqueScreen(ctk.CTkFrame):
             f"{emoji} {rotulo}": chave for chave, (emoji, rotulo) in CATEGORIAS_VALIDAS.items()
         }
 
-        # Container dos 5 cards de categoria
+        # Container dos 5 cards 3D coloridos de categoria
         self.cards_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.cards_frame.grid(row=0, column=0, sticky="ew", pady=(0, 14))
         for col in range(5):
@@ -54,8 +54,8 @@ class EstoqueScreen(ctk.CTkFrame):
         ajuste_frame = ctk.CTkFrame(
             self,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=12,
-            border_width=1,
+            corner_radius=14,
+            border_width=2,
             border_color=COR_DOURADO,
         )
         ajuste_frame.grid(row=1, column=0, sticky="ew", pady=(0, 14))
@@ -65,7 +65,7 @@ class EstoqueScreen(ctk.CTkFrame):
             ajuste_frame,
             text="📦 Ajuste Manual de Estoque:",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color=COR_VERDE_PINHEIRO,
+            text_color=COR_OURO_CLARO,
         ).grid(row=0, column=0, padx=(16, 10), pady=14, sticky="w")
 
         self.combo_categoria = ctk.CTkOptionMenu(
@@ -82,6 +82,9 @@ class EstoqueScreen(ctk.CTkFrame):
             width=120,
             height=34,
             placeholder_text="Quantidade",
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color="#FFF9F0",
         )
         self.entry_delta.grid(row=0, column=2, padx=6, pady=14)
 
@@ -143,7 +146,7 @@ class EstoqueScreen(ctk.CTkFrame):
             show_christmas_dialog(self, "Erro no Ajuste de Estoque", str(exc), icone="⚠️", tipo="erro")
 
     def atualizar_dados(self) -> None:
-        """Atualiza os 5 cards visuais e a tabela de estoque destacando alertas < 5."""
+        """Atualiza os 5 cards visuais 3D e a tabela de estoque destacando alertas < 5."""
         for widget in self.cards_frame.winfo_children():
             widget.destroy()
 
@@ -157,6 +160,7 @@ class EstoqueScreen(ctk.CTkFrame):
                 emoji=item.emoji,
                 nome=item.nome_exibicao,
                 quantidade=item.quantidade_disponivel,
+                tipo_chave=item.tipo,
             )
             padx = (0, 6) if idx == 0 else ((6, 0) if idx == 4 else 6)
             card.grid(row=0, column=idx, sticky="ew", padx=padx)

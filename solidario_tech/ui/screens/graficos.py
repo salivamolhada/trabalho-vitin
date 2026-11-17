@@ -10,13 +10,10 @@ from services.relatorio_service import RelatorioService
 from ui.theme import (
     COR_BRANCO_NEVE,
     COR_CARD_BRANCO,
-    COR_CINZA_CLARO,
     COR_DOURADO,
-    COR_TEXTO_ESCURO,
-    COR_TEXTO_SUAVE,
+    COR_OURO_CLARO,
     COR_VERDE_ESCURO_HOVER,
     COR_VERDE_PINHEIRO,
-    COR_VERMELHO_NATAL,
 )
 
 
@@ -36,8 +33,8 @@ class GraficosScreen(ctk.CTkFrame):
         kpi_bar = ctk.CTkFrame(
             self,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=12,
-            border_width=1,
+            corner_radius=14,
+            border_width=2,
             border_color=COR_DOURADO,
         )
         kpi_bar.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 12))
@@ -47,7 +44,7 @@ class GraficosScreen(ctk.CTkFrame):
             kpi_bar,
             text="📊 Carregando indicadores...",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color=COR_VERDE_PINHEIRO,
+            text_color=COR_OURO_CLARO,
             anchor="w",
         )
         self.lbl_kpi.grid(row=0, column=0, padx=16, pady=12, sticky="w")
@@ -55,8 +52,8 @@ class GraficosScreen(ctk.CTkFrame):
         ctk.CTkButton(
             kpi_bar,
             text="Atualizar Gráficos",
-            width=140,
-            height=32,
+            width=145,
+            height=34,
             corner_radius=8,
             fg_color=COR_VERDE_PINHEIRO,
             hover_color=COR_VERDE_ESCURO_HOVER,
@@ -81,9 +78,9 @@ class GraficosScreen(ctk.CTkFrame):
         frame = ctk.CTkFrame(
             self,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=12,
-            border_width=1,
-            border_color=COR_CINZA_CLARO,
+            corner_radius=14,
+            border_width=2,
+            border_color=COR_DOURADO,
         )
         frame.grid(row=row, column=col, sticky="nsew", padx=padx, pady=pady)
         canvas = FigureCanvasTkAgg(fig, master=frame)
@@ -99,7 +96,7 @@ class GraficosScreen(ctk.CTkFrame):
                 f"Distribuído: {kpis['total_distribuido']} un. ({kpis['taxa_distribuicao']}%)  |  "
                 f"Em Estoque: {kpis['total_estoque']} un."
             ),
-            text_color=COR_VERMELHO_NATAL if kpis["total_estoque"] < 15 else COR_VERDE_PINHEIRO,
+            text_color="#FDA4AF" if kpis["total_estoque"] < 15 else COR_OURO_CLARO,
         )
 
         self.relatorio_service.gerar_grafico_barras(self.fig_barras)

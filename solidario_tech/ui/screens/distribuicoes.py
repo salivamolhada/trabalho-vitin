@@ -14,14 +14,13 @@ from ui.components.table import StyledTreeviewTable
 from ui.theme import (
     COR_BRANCO_NEVE,
     COR_CARD_BRANCO,
-    COR_CINZA_CLARO,
     COR_DOURADO,
+    COR_INPUT_FUNDO,
+    COR_OURO_CLARO,
     COR_TEXTO_ESCURO,
     COR_TEXTO_SUAVE,
     COR_VERDE_ESCURO_HOVER,
     COR_VERDE_PINHEIRO,
-    COR_VERMELHO_HOVER,
-    COR_VERMELHO_NATAL,
 )
 
 
@@ -50,8 +49,8 @@ class DistribuicoesScreen(ctk.CTkFrame):
         form = ctk.CTkFrame(
             self,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=12,
-            border_width=1,
+            corner_radius=14,
+            border_width=2,
             border_color=COR_DOURADO,
         )
         form.grid(row=0, column=0, sticky="ew", pady=(0, 12))
@@ -62,16 +61,16 @@ class DistribuicoesScreen(ctk.CTkFrame):
             form,
             text="⭐ Registrar Entrega / Distribuição Solidária",
             font=ctk.CTkFont(size=15, weight="bold"),
-            text_color=COR_VERDE_PINHEIRO,
+            text_color=COR_OURO_CLARO,
         ).grid(row=0, column=0, columnspan=3, padx=16, pady=(12, 8), sticky="w")
 
-        ctk.CTkLabel(form, text="Item do Estoque *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_ESCURO).grid(
+        ctk.CTkLabel(form, text="Item do Estoque *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_SUAVE).grid(
             row=1, column=0, padx=(16, 6), sticky="w"
         )
-        ctk.CTkLabel(form, text="Quantidade a Distribuir *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_ESCURO).grid(
+        ctk.CTkLabel(form, text="Quantidade a Distribuir *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_SUAVE).grid(
             row=1, column=1, padx=6, sticky="w"
         )
-        ctk.CTkLabel(form, text="Data da Entrega (DD/MM/AAAA) *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_ESCURO).grid(
+        ctk.CTkLabel(form, text="Data da Entrega (DD/MM/AAAA) *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_SUAVE).grid(
             row=1, column=2, padx=(6, 16), sticky="w"
         )
 
@@ -84,24 +83,52 @@ class DistribuicoesScreen(ctk.CTkFrame):
         )
         self.combo_item.grid(row=2, column=0, padx=(16, 6), pady=(2, 8), sticky="ew")
 
-        self.entry_qtd = ctk.CTkEntry(form, placeholder_text="Ex.: 5", height=34)
+        self.entry_qtd = ctk.CTkEntry(
+            form,
+            placeholder_text="Ex.: 5",
+            height=34,
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color=COR_TEXTO_ESCURO,
+        )
         self.entry_qtd.grid(row=2, column=1, padx=6, pady=(2, 8), sticky="ew")
 
-        self.entry_data = ctk.CTkEntry(form, placeholder_text="DD/MM/AAAA", height=34)
+        self.entry_data = ctk.CTkEntry(
+            form,
+            placeholder_text="DD/MM/AAAA",
+            height=34,
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color=COR_TEXTO_ESCURO,
+        )
         self.entry_data.insert(0, date.today().strftime("%d/%m/%Y"))
         self.entry_data.grid(row=2, column=2, padx=(6, 16), pady=(2, 8), sticky="ew")
 
-        ctk.CTkLabel(form, text="Nome do Beneficiário *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_ESCURO).grid(
+        ctk.CTkLabel(form, text="Nome do Beneficiário *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_SUAVE).grid(
             row=3, column=0, padx=(16, 6), sticky="w"
         )
-        ctk.CTkLabel(form, text="Responsável pela Entrega *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_ESCURO).grid(
+        ctk.CTkLabel(form, text="Responsável pela Entrega *", font=ctk.CTkFont(size=12, weight="bold"), text_color=COR_TEXTO_SUAVE).grid(
             row=3, column=1, padx=6, sticky="w"
         )
 
-        self.entry_beneficiario = ctk.CTkEntry(form, placeholder_text="Ex.: Família Silva / Abrigo Lar Feliz", height=34)
+        self.entry_beneficiario = ctk.CTkEntry(
+            form,
+            placeholder_text="Ex.: Família Silva / Abrigo Lar Feliz",
+            height=34,
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color=COR_TEXTO_ESCURO,
+        )
         self.entry_beneficiario.grid(row=4, column=0, padx=(16, 6), pady=(2, 14), sticky="ew")
 
-        self.entry_responsavel = ctk.CTkEntry(form, placeholder_text="Ex.: Mariana Costa", height=34)
+        self.entry_responsavel = ctk.CTkEntry(
+            form,
+            placeholder_text="Ex.: Mariana Costa",
+            height=34,
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color=COR_TEXTO_ESCURO,
+        )
         self.entry_responsavel.grid(row=4, column=1, padx=6, pady=(2, 14), sticky="ew")
 
         ctk.CTkButton(
@@ -109,8 +136,9 @@ class DistribuicoesScreen(ctk.CTkFrame):
             text="⭐ Confirmar Distribuição",
             height=36,
             corner_radius=8,
-            fg_color=COR_VERMELHO_NATAL,
-            hover_color=COR_VERMELHO_HOVER,
+            fg_color=COR_DOURADO,
+            hover_color="#D99B1E",
+            text_color="#3B0609",
             font=ctk.CTkFont(size=13, weight="bold"),
             command=self._registrar,
         ).grid(row=4, column=2, padx=(6, 16), pady=(2, 14), sticky="ew")
@@ -119,9 +147,9 @@ class DistribuicoesScreen(ctk.CTkFrame):
         barra = ctk.CTkFrame(
             self,
             fg_color=COR_CARD_BRANCO,
-            corner_radius=10,
+            corner_radius=12,
             border_width=1,
-            border_color=COR_CINZA_CLARO,
+            border_color=COR_DOURADO,
         )
         barra.grid(row=1, column=0, sticky="ew", pady=(0, 10))
         barra.grid_columnconfigure(1, weight=1)
@@ -133,7 +161,14 @@ class DistribuicoesScreen(ctk.CTkFrame):
             text_color=COR_TEXTO_SUAVE,
         ).grid(row=0, column=0, padx=(14, 8), pady=10)
 
-        self.entry_busca = ctk.CTkEntry(barra, placeholder_text="Digite o nome do beneficiário...", height=32)
+        self.entry_busca = ctk.CTkEntry(
+            barra,
+            placeholder_text="Digite o nome do beneficiário...",
+            height=32,
+            fg_color=COR_INPUT_FUNDO,
+            border_color=COR_DOURADO,
+            text_color=COR_TEXTO_ESCURO,
+        )
         self.entry_busca.grid(row=0, column=1, padx=(6, 14), pady=10, sticky="ew")
         self.entry_busca.bind("<KeyRelease>", lambda _e: self.atualizar_dados())
 
